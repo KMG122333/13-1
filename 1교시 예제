@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <string.h>
+
+int main(){
+    FILE *fp;
+    char str[100];
+
+    // 선수 리스트 배열
+    char *male_list[] = {"김동현", "김민재", "윤성빈", "아모띠", NULL};
+    char *female_list[] = {"장은실", "최승연", NULL};
+
+    fp = fopen("a.txt", "a+");
+    if(fp == NULL){
+        printf("파일을 만들지 못했습니다.\n");
+        return 1;
+    }
+
+    while(1){
+        printf("선수 이름: ");
+        scanf("%s", str);
+
+        if(strcmp(str, "end") == 0){
+            break;
+        }
+        else if(strcmp(str, "male_list") == 0){
+            // 남자 선수 리스트 출력
+            int i = 0;
+            while(male_list[i] != NULL){
+                printf("%s\n", male_list[i]);
+                i++;
+            }
+        }
+        else if(strcmp(str, "female_list") == 0){
+            // 여자 선수 리스트 출력
+            int i = 0;
+            while(female_list[i] != NULL){
+                printf("%s\n", female_list[i]);
+                i++;
+            }
+        }
+        else if(strcmp(str, "list") == 0){
+            // 파일의 내용 출력
+            fseek(fp, 0, SEEK_SET);
+            while(1){
+                if(fgets(str, sizeof(str), fp) == NULL){
+                    break;
+                }
+                printf("%s", str);
+            }
+        }
+        else{
+            fprintf(fp, "%s\n", str);
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
