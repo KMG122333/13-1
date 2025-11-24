@@ -1,0 +1,55 @@
+#include <stdio.h>
+
+int main(){
+    FILE *ifp, *ofp;
+    char name[20];
+    double height, power;
+
+    double max_height = -1.0;
+    double max_power = -1.0;
+    char max_height_name[20];
+    char max_power_name[20];
+
+    int res;
+
+    // MyCompiler에서는 파일 열기 불가 → stdin 사용
+    ifp = stdin;
+
+    ofp = fopen("b.txt", "w");
+    if(ofp == NULL){
+        printf("출력 파일을 열지 못했습니다.\n");
+        return 1;
+    }
+
+    while(1){
+        res = fscanf(ifp, "%s%lf%lf", name, &height, &power);
+
+        if(res == EOF){
+            break;
+        }
+
+        if(height < 0 || height > 200 || power < 0 || power > 100){
+            printf("오류입니다. 값을 다시 입력해 주세요\n");
+            continue;
+        }
+
+        fprintf(ofp, "%s %.1lf %.1lf\n", name, height, power);
+
+        if(height > max_height){
+            max_height = height;
+            sprintf(max_height_name, "%s", name);
+        }
+
+        if(power > max_power){
+            max_power = power;
+            sprintf(max_power_name, "%s", name);
+        }
+    }
+
+    fclose(ofp);
+
+    printf("가장 키가 큰 사람은 %s입니다.\n", max_height_name);
+    printf("가장 근력이 좋은 사람은 %s입니다.\n", max_power_name);
+
+    return 0;
+}
